@@ -136,7 +136,10 @@ if expInfo['MRI/Behavior? (M/B)']=='M':
     MRIflag=1
     yes_key='1'
     no_key='2'
-    filename = _thisDir + os.sep + u'THHS_data/MRI_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
+    thisDir_save=_thisDir
+    thisDir_save=thisDir_save.split('/')
+    thisDir_save='/'.join(thisDir_save[:-1])
+    filename = thisDir_save + u'/ThalHi_data/behav_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
         # SHape Sizing
     vis_deg_circ=15 # too big!
     vis_deg_poly=20 #good for MRI?
@@ -147,7 +150,10 @@ elif expInfo['MRI/Behavior? (M/B)']=='B':
     yes_key='1'
     no_key='0'
     # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-    filename = _thisDir + os.sep + u'THHS_data/behav_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
+    thisDir_save=_thisDir
+    thisDir_save=thisDir_save.split('/')
+    thisDir_save='/'.join(thisDir_save[:-1])
+    filename = thisDir_save + u'/ThalHi_data/behav_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
     #Above to be saved in Thalamege *change later January 21 2019
     vis_deg_circ=10
     vis_deg_poly=15
@@ -204,7 +210,7 @@ else:
 
 #### Welcome screen
 # Initialize components for Routine "Welcome"
-WelcomeClock = core.Clock()
+#WelcomeClock = core.Clock()
 Welc = visual.TextStim(win=win, name='Welc',
     text=u'Welcome!', units='norm',
     font=u'Arial',
@@ -216,7 +222,7 @@ Welc = visual.TextStim(win=win, name='Welc',
 
 ##### Instructions screen
 # Initialize components for Routine "Instructions"
-InstructionsClock = core.Clock()
+#InstructionsClock = core.Clock()
 Directions = visual.TextStim(win=win, name='Directions',
     text=u'You are now about to begin the task. \n\nGet Ready \n\nPress Any Key to Continue',
     font=u'Arial', alignVert='center', units='norm',
@@ -228,7 +234,7 @@ Directions = visual.TextStim(win=win, name='Directions',
 
 ##### Central fixations
 # Initialize components for Routine "Fixation"
-FixationClock = core.Clock()
+#FixationClock = core.Clock()
 Fix_Cue = visual.TextStim(win=win, name='Fix_Cue',
     text=u'+', units='norm',
     font=u'Arial',
@@ -281,14 +287,14 @@ simpleVert= [(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)]
 #filled circle # setting colors as None now, will change them when setting up trial sequence
 circle_filled = visual.Circle(
     win=win, name='circle_filled', units='deg', radius=0.5,
-    pos=(0,0), size=[vis_deg_circ,vis_deg_circ], color=None, fillColor=None,
+    pos=(0,0), size=[vis_deg_circ/2,vis_deg_circ/2], color=None, fillColor=None,
     fillColorSpace='rgb255')
 
 #donut circle
 circle_donut = visual.Circle(
-    win=win, name='circle_donut', units='deg', radius=0.5,
+    win=win, name='circle_donut', units='deg', #radius=0.5,
     fillColor=None, lineWidth=100, pos=(0,0),
-    size=[vis_deg_circ,vis_deg_circ], lineColorSpace='rgb255', lineColor=None,
+    size=[vis_deg_circ/2,vis_deg_circ/2], lineColorSpace='rgb255', lineColor=None,
     interpolate=True)
 
 polygon_filled = visual.ShapeStim(
@@ -556,6 +562,7 @@ if MRIflag:
 
 #### Setting up a global clock to track initiation of experiment to end
 Time_Since_Run = core.MonotonicClock()  # to track the time since experiment started, this way it is very flexible compared to psychopy.clock
+RT_clock=core.Clock()
 ##### 2 seconds Intial fixation
 Fix_Cue.draw()
 win.flip()
@@ -579,8 +586,9 @@ for trial_num in range(len(Trial_dict)): #range(len(Trial_dict))
     # draw the face or scene picture
     Trial_dict[trial_num]['pic_stim'].draw()
     Photo_Prez=Time_Since_Run.getTime()
+    RT_clock.reset()
     win.flip()
-    subRespo = event.waitKeys(maxWait=2.5, timeStamped=True, keyList=['0','1'])
+    subRespo = event.waitKeys(maxWait=2.5, timeStamped=RT_clock, keyList=['0','1'])
     subRespo_T=Time_Since_Run.getTime()
     if Trial_dict[trial_num]['cue']=='dcr' or Trial_dict[trial_num]['cue']=='dpr':
         if Trial_dict[trial_num]['pic']=='Face':
