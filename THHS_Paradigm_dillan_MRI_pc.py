@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+## June 06, 2020: change monotonic clock to intialize after the 6s delay, commented out core.wait(intial_stay)
+##  A version of this script is probably saved on the MRI PC, and is likely more current
 
 ## march 04, 2019: change cue (shape) time from 1 second to 500ms
 """
@@ -196,17 +198,7 @@ for key in ['q', 'escape']:
     event.globalKeys.add(key, func=core.quit)
 
 
-# Not using experiment handler anymore
-# An ExperimentHandler isn't essential but helps with data saving
-# thisExp = data.ExperimentHandler(name=expName, version='',
-#     extraInfo=expInfo, runtimeInfo=None,
-#     originPath='/Users/mpipoly/Desktop/Psychopy/Task_Kai.py',
-#     savePickle=False, saveWideText=True,
-#     dataFileName=filename)
 
-# save a log file for detail verbose info
-#logFile = logging.LogFile(filename+'.log', level=logging.EXP)
-#logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
 
 #
 endExpNow = False  # flag for 'escape' or other condition => quit the exp
@@ -303,13 +295,7 @@ for i,f in enumerate(np.random.randint(low=0,high=len(faces_list),size=len(Trial
 
 
 ##### Setup Cue stim objects
-#Overlapping vertices for below
-#red = [1.0,-1,-1]
-#blue = [0, 0, 255]
-#color = 'green'
-#scale = 0.7
-#donutVert = [[(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)],[(-.15,-.15),(-.15,.15),(.15,.15),(.15,-.15)]]
-#simpleVert= [(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)]
+
 size=(.75,.85)
 #filled circle 
 circle_filled_r = visual.ImageStim(
@@ -467,126 +453,15 @@ for i in range(len(Trial_order)):
     Trial_dict[i]['img_path'] = Img_path[i]
 
 
-#### Old CLocks
-#globalClock = core.Clock()  # to track the time since experiment started, this way it is very flexible compared to psychopy.clock
-#routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine
-#
-# ------Prepare to start Routine "Welcome"-------
-#t = 0
-#WelcomeClock.reset()  # clock
-#frameN = -1
-#continueRoutine = True
-#routineTimer.add(Welcome_Time_On_Screen)
-# update component parameters for each repeat
-# keep track of which components have finished
-#WelcomeComponents = [Welc]
-#
-#
-# no idea what this is...??
-#for thisComponent in WelcomeComponents:
-#    if hasattr(thisComponent, 'status'):
-#        thisComponent.status = NOT_STARTED
-#
-# -------Start Routine "Welcome"-------
-#while continueRoutine and routineTimer.getTime() > 0:
-#    # get current time
-#    t = WelcomeClock.getTime()
-#    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-#    # update/draw components on each frame
-#
-#    # *Welc* updates
-#    if t >= 0.0 and Welc.status == NOT_STARTED:
-#        # keep track of start time/frame for later
-#        Welc.tStart = t
-#        Welc.frameNStart = frameN  # exact frame index
+
 Welc.draw()
 win.flip()
 event.waitKeys(maxWait=3)
-#    frameRemains = 0.0 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
-#    if Welc.status == STARTED and t >= frameRemains:
-#        Welc.setAutoDraw(False)
-#
-#    # check if all components have finished
-#    if not continueRoutine:  # a component has requested a forced-end of Routine
-#        break
-#    continueRoutine = False  # will revert to True if at least one component still running
-#    for thisComponent in WelcomeComponents:
-#        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-#            continueRoutine = True
-#            break  # at least one component has not yet finished
-#
-#    # check for quit (the Esc key)
-#    if endExpNow or event.getKeys(keyList=["escape"]):
-#        core.quit()
-#
-#    # refresh the screen
-#    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-#        win.flip()
-#
-# -------Ending Routine "Welcome"-------
-#for thisComponent in WelcomeComponents:
-#    if hasattr(thisComponent, "setAutoDraw"):
-#        thisComponent.setAutoDraw(False)
-#
-# ------Prepare to start Routine "Instructions"-------
-#t = 0
-#InstructionsClock.reset()  # clock
-#frameN = -1
-#continueRoutine = True
-#routineTimer.add(Instruction_Time)
-# update component parameters for each repeat
-# keep track of which components have finished
-#InstructionsComponents = [Directions]
-#for thisComponent in InstructionsComponents:
-#    if hasattr(thisComponent, 'status'):
-#        thisComponent.status = NOT_STARTED
-#
-# -------Start Routine "Instructions"-------
-#while continueRoutine and routineTimer.getTime() > 0:
-#    # get current time
-#    t = InstructionsClock.getTime()
-#    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-#    # update/draw components on each frame
-#
-#    # *Directions* updates
-#    if t >= 3.0 and Directions.status == NOT_STARTED:
-#        # keep track of start time/frame for later
-#        Directions.tStart = t
-#        Directions.frameNStart = frameN  # exact frame index
+
 Directions.draw()
 win.flip()
 event.waitKeys()
-#    frameRemains = 3.0 + 5.0- win.monitorFramePeriod * 0.75  # most of one frame period left
-#    if Directions.status == STARTED and t >= frameRemains:
-#        Directions.setAutoDraw(False)
-#
-#    # check if all components have finished
-#    if not continueRoutine:  # a component has requested a forced-end of Routine
-#        break
-#    continueRoutine = False  # will revert to True if at least one component still running
-#    for thisComponent in InstructionsComponents:
-#        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-#            continueRoutine = True
-#            break  # at least one component has not yet finished
-#
-#    # check for quit (the Esc key)
-#    if endExpNow or event.getKeys(keyList=["escape"]):
-#        core.quit()
-#
-#    # refresh the screen
-#    #if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-#
-#
-# -------Ending Routine "Instructions"-------
-#for thisComponent in InstructionsComponents:
-#    if hasattr(thisComponent, "setAutoDraw"):
-#        thisComponent.setAutoDraw(False)
 
-
-# -------Ending Routine "Instructions"-------
-
-
-#------------ Start Trial presentation sequence
 
 ##### TTL Pulse trigger
 if MRIflag:
@@ -595,17 +470,16 @@ if MRIflag:
     event.waitKeys(keyList=['lshift','z'])
 
 
-##### Triggers for serial port ***
+##### 2 seconds Intial fixation
+Fix_Cue.draw()
+win.flip()
+#core.wait(Initial_wait_time)
+## INITIALIZING A 6 SECOND DELAY
+core.wait(6)
 
 #### Setting up a global clock to track initiation of experiment to end
 Time_Since_Run = core.MonotonicClock()  # to track the time since experiment started, this way it is very flexible compared to psychopy.clock
 RT_clock=core.Clock()
-# INITIALIZING A 6 SECOND DELAY
-core.wait(6)
-##### 2 seconds Intial fixation
-Fix_Cue.draw()
-win.flip()
-core.wait(Initial_wait_time)
 
 ##### Start trials
 
@@ -618,12 +492,7 @@ for trial_num in range(len(Trial_dict)): #range(len(Trial_dict))
     win.flip()
     core.wait(Cue_time)
 
-    # this is for debug
-    #print(Trial_dict[trial_num]['Trial_type'] )
-    #print(Trial_dict[trial_num]['cue'])
-    #print(Trial_dict[trial_num]['Color'])
 
-    # draw the face or scene picture
     event.clearEvents()
     Trial_dict[trial_num]['pic_stim'].autoDraw=True
     Photo_Prez=Time_Since_Run.getTime()
@@ -638,8 +507,7 @@ for trial_num in range(len(Trial_dict)): #range(len(Trial_dict))
         subRespo=event.getKeys(timeStamped=RT_clock, keyList=[no_key,yes_key])
         if subRespo:
             subResps.append(subRespo)
-    #core.wait(Pic_time)
-    #subRespo = event.getKeys(timeStamped=RT_clock, keyList=['0','1'])
+
     Trial_dict[trial_num]['pic_stim'].autoDraw=False
     subRespo_T=Time_Since_Run.getTime()
     if Trial_dict[trial_num]['cue']=='dcr' or Trial_dict[trial_num]['cue']=='dpr':
@@ -713,55 +581,4 @@ for trial_num in range(len(Trial_dict)): #range(len(Trial_dict))
     core.wait(ITI) # randomly pick one from the range of ITIs
     makeCSV(filename=filename,thistrialDict=Trial_dict,trial_num=trial_num)
 
-##### Add a finish screen so subjects know they are done with a task block
 
-###### Not using trial handler
-# # set up handler to look after randomisation of conditions etc
-# trials = data.TrialHandler(nReps=2, method='random',
-#     extraInfo=expInfo, originPath=-1, #if needed, add dataTypes=['rt']
-#     trialList=(stimList, 0:30), # add 'Kai_testing.xlsx' for excel method
-#     seed=None, name='trials')
-# thisExp.addLoop(trials)  # add the loop to the experiment
-# thisTrial = trials.trialList[0]  # so we can initialise stimuli with some values
-# # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
-# if thisTrial != None:
-#     for paramName in thisTrial:
-#         exec('{} = thisTrial[paramName]'.format(paramName))
-
-# t=0
-# CueClock.reset() #reset
-# frameN = -1
-# continueRoutine = True
-
-
-# for thisTrial in trialHandler:
-#     Fix_Cue.setAutoDraw = True
-#     win.flip()
-#     core.wait(secs=0.5, hogCPUperiod=0.1)
-#     Fix_Cue.setAutoDraw=False
-#     win.flip()
-#     core.wait(secs=0.5, hogCPUperiod=0.1)
-
-#     if thisTrial['stim']=='face' and Fix_Cue.autoDraw == False:
-#         thisFace=np.random.choice(Img_Faces.keys(),1)
-#         thisFace=Img_Faces[thisFace]
-#         thisStim=thisFace
-#         thisReactionTime=..... + float(thisTrial['face'])/2.0
-
-#     elif thisTrial['stim']=='place':
-#         thisPlace=np.random.choice(Img_Scene.keys(),1)
-#         thisPlace=Img_Scene[thisPlace]
-#         thisStim=thisPlace
-
-#         thisReactionTime=..... + float(thisTrial['place'])/2.0
-
-#     if thisTrial['color']=='red':
-#         thisStim.setColor==red
-#     elif thisTrial['color']=='blue'
-#         thisStim.setColor==blue
-
-#     if thisTrial['stim']==''
-
-
-# if hasattr(thisStim, 'status'):
-#     thisStim.status = NOT_STARTED
