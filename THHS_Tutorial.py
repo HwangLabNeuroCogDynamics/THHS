@@ -150,6 +150,8 @@ def pracBlocks(n_trials=n_trials):
     Pic_order[Pic_order == 1] = 'Face'
     Pic_order[Pic_order == 2] = 'Scene'
 
+    #Dictionaries and the corresponding file paths
+    direc = os.getcwd()+'/localizer_stim/' #_thisDir #'/Users/mpipoly/Desktop/Psychopy/localizer_stim/' #always setup path on the fly in case you switch computers
     ext = 'scenes/*.jpg' #file delimiter
     faces_ext = 'faces/*.jpg'
     faces_list = glob.glob(direc + faces_ext)
@@ -272,27 +274,27 @@ def pracBlocks(n_trials=n_trials):
         # draw the face or scene picture
         Trial_dict[trial_num]['pic_stim'].draw()
         win.flip()
-        subRespo = event.waitKeys(maxWait=Pic_time, timeStamped=True, keyList=['0','1'])
+        subRespo = event.waitKeys(maxWait=Pic_time, timeStamped=True, keyList=[yes_key,no_key])
         if Trial_dict[trial_num]['cue']=='dcr' or Trial_dict[trial_num]['cue']=='dpr':
             if Trial_dict[trial_num]['pic']=='Face':
-                corr_resp='1'
+                corr_resp=yes_key
             else:
-                corr_resp='0'
+                corr_resp=no_key
         if Trial_dict[trial_num]['cue']=='fpr' or Trial_dict[trial_num]['cue']=='fpb':
             if Trial_dict[trial_num]['pic']=='Face':
-                corr_resp='1'
+                corr_resp=yes_key
             else:
-                corr_resp='0'
+                corr_resp=no_key
         if Trial_dict[trial_num]['cue']=='fcr' or Trial_dict[trial_num]['cue']=='fcb':
             if Trial_dict[trial_num]['pic']=='Scene':
-                corr_resp='1'
+                corr_resp=yes_key
             else:
-                corr_resp='0'
+                corr_resp=no_key
         if Trial_dict[trial_num]['cue']=='dpb' or Trial_dict[trial_num]['cue']=='dcb':
             if Trial_dict[trial_num]['pic']=='Scene':
-                corr_resp='1'
+                corr_resp=yes_key
             else:
-                corr_resp='0'
+                corr_resp=no_key
 
         print(subRespo)
 
@@ -321,13 +323,9 @@ def pracBlocks(n_trials=n_trials):
     print(acc)
     print(np.sum(acc))
     acc_feedback=visual.TextStim(win=win, name='accFeedback',
-    text=u'Your accuracy was '+str(((np.sum(acc)/len(Trial_order))*100)+' percent. Would you like to try again?', font=u'Arial',
-    alignVert='center', units='norm',
-    pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
-    color=u'white', colorSpace='rgb', opacity=1,
-    languageStyle='LTR',
-    depth=0.0);
-
+                    text=u'Your accuracy was '+str((np.sum(acc)/len(Trial_order))*100)+' percent. Would you like to try again?', font=u'Arial',
+                    alignVert='center', units='norm',pos=(0, 0), height=0.09, wrapWidth=None, ori=0,color=u'white', colorSpace='rgb', opacity=1,
+                    languageStyle='LTR', depth=0.0);
     Proportion = str(np.sum(acc)/n_trials*100)
     print(Proportion)
 

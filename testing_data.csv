@@ -1,0 +1,7 @@
+sub,block,trial_n,cue,Task,pic,Trial_type,trial_Corr,rt,What_Is_CorrResp,Subject_Respo,img_path,
+,001,0,dpr,Face,Scene,Stay,0,0.9011605656,0,1,Z:\ThalHi/localizer_stim/scenes\60.jpg,
+,001,1,dpr,Face,Scene,Stay,1,0.801354875404,0,0,Z:\ThalHi/localizer_stim/scenes\Sc132.jpg,
+,001,2,dpr,Face,Face,Stay,0,0.517366458926,1,0,Z:\ThalHi/localizer_stim/faces\155.jpg,
+,001,3,fcb,Scene,Face,EDS,1,0.0672327325883,0,0,Z:\ThalHi/localizer_stim/faces\210.jpg,
+,001,4,fcb,Scene,Scene,Stay,0,0.984997050226,1,0,Z:\ThalHi/localizer_stim/scenes\Sc33.jpg,
+,001,5,fpb,Face,Scene,IDS,-1,none,0,none,Z:\ThalHi/localizer_stim/scenes\64.jpg,

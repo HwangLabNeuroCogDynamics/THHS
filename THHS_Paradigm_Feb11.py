@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+## march 04, 2019: change cue (shape) time from 1 second to 500ms
 """
 Authors: Marco Pipoly, Dillan Cellier, Kai Hwang.
 University of Iowa, 
@@ -25,7 +27,7 @@ script layout.
 """
 
 from __future__ import absolute_import, division, print_function
-from psychopy import locale_setup, sound, gui, visual, core, data, event, logging, clock, info
+from psychopy import  gui, visual, core, data, event,clock
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 from psychopy.hardware.emulator import launchScan # Add and customize this www.psychopy.org/api/hardware/emulator.html
@@ -54,10 +56,13 @@ import csv #for export purposes and analysis
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))#.decode(sys.getfilesystemencoding())
 os.chdir(_thisDir)
+print(_thisDir)
+
 
 # Store info about the experiment session
 expName = 'Task_THHS'  # from the Builder filename that created this script
 expInfo = {'block': '001', 'participant': '', 'sex': '', 'MRI/Behavior? (M/B)':'', 'Stay_R':'0.5','IDS_R':'0.5'} 
+
 # A note on this: blocks are added each run of the script
 dlg = gui.DlgFromDict(dictionary=expInfo, title=expName) # Gui grabs the dictionary to create a pre-experiment info deposit
 if dlg.OK == False:
@@ -65,14 +70,80 @@ if dlg.OK == False:
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
+#----------------setup windows and display objects--------
+##### Setup the display Window
+win = visual.Window(
+    size=(1440,900), fullscr=False, screen=0,
+    allowGUI=False, allowStencil=False, units='deg',
+    monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
+    blendMode='avg', useFBO=True)
+
+#### Dependent on what variation of the experiment is running
+if expInfo['MRI/Behavior? (M/B)']=='M':
+    ITIpath='/Volumes/rdss_kahwang/Generate_ITIs/ThalHiITIs/' #'Z:/Generate_ITIs/ThalHiITIs/'
+    ITI_rand_file=np.random.choice(os.listdir(ITIpath))
+    ITI_rand_file=open(ITIpath+ITI_rand_file,'r').readlines()
+    ITI_list=[]
+    
+    for i in ITI_rand_file:
+        t=i.split('\n')
+        t=t[0]
+        ITI_list.append(float(t))
+    
+    def make_ITI(trial_n):
+        #ITI=np.random.choice([1,2,3,4,5,6,7,8,9,10],1,p=[(.7/9),(.7/9),(.7/9),.3,(.7/9),(.7/9),(.7/9),(.7/9),(.7/9),(.7/9)])[0] # averages to around 4 seconds?
+        ITI=ITI_list[trial_n]
+        return ITI
+    real_Total_trials = 48+3 #  number of first stay trials 
+    MRIflag=1
+    yes_key='1'
+    no_key='2'
+    thisDir_save=_thisDir
+    thisDir_save=thisDir_save.split('/')
+    thisDir_save='/'.join(thisDir_save[:-1])
+    filename = thisDir_save + u'/ThalHi_data/MRI_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
+        # SHape Sizing
+    vis_deg_circ=15 # too big! Original is 15
+    vis_deg_poly=20 #good for MRI?
+    Cue_time = .5
+    Pic_time = 2.5
+    refresh_rate=60
+
+elif expInfo['MRI/Behavior? (M/B)']=='B':
+    def make_ITI(trial_n):
+        ITI=np.random.choice([1, 1.1, 1.2, 1.3, 1.4, 1.5])
+        return ITI
+    
+    real_Total_trials = 83 #97 # Adjust number as indicated for experiment
+    MRIflag=0
+    yes_key='1'
+    no_key='0'
+    # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
+    thisDir_save=_thisDir
+    thisDir_save=thisDir_save.split('/')
+    thisDir_save='/'.join(thisDir_save[:-1])
+    filename = thisDir_save + u'/ThalHi_data/behav_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
+    #Above to be saved in Thalamege *change later January 21 2019
+    vis_deg_circ=10
+    vis_deg_poly=15
+    Cue_time = .5
+    Pic_time = 2.5
+    refresh_rate=60
+else:
+    print('no ITIs provided')
+    core.quit()
 
 
 #------------Initialize Variables------
 #### Timing and trial keeping variables
 #Welcome_Time_On_Screen = 1  # in seconds.
 #Instruction_Time = 5 #
-real_Total_trials = 83 #97 # Adjust number as indicated for experiment
-Total_trials=real_Total_trials-3
+
+#ITIs = [1, 1.1, 1.2, 1.3, 1.4, 1.5] # need to jitter this for fMRI, no is just uniform random
+Initial_wait_time = 3
+Number_of_initial_stays = 3
+
+Total_trials=real_Total_trials-Number_of_initial_stays
 Stay_probability=float(expInfo['Stay_R'])
 Switch_probability =1-float(expInfo['Stay_R'])
 Extra_dimension_switch_probability = 1-float(expInfo['IDS_R'])
@@ -83,11 +154,7 @@ if Extra_dimension_switch_probability + Intra_dimension_switch_probability > 1: 
 if Switch_probability >= .9: # same w switch ratio
     print('Switch Prob is No Bueno (equal to or above 90%)')
     core.quit()
-Cue_time = 1
-Pic_time = 3
-#ITIs = [1, 1.1, 1.2, 1.3, 1.4, 1.5] # need to jitter this for fMRI, no is just uniform random
-Initial_wait_time = 3
-Number_of_initial_stays = 3
+
 
 #### Set up the order of switch versus stay trials,
 # integer code for trial type
@@ -96,10 +163,10 @@ Extra_dimension_switch = 33  #EDS, shifting out of decision tree
 Stay_trial = 99
 
 #### setup number of trials for each trial type (EDS, IDS, stay)
-Total_switch_trials = round(Total_trials * Switch_probability)
+Total_switch_trials = round((Total_trials) * Switch_probability)
 Number_of_EDS = round(Total_switch_trials * Extra_dimension_switch_probability)
 Number_of_IDS = round(Total_switch_trials * Intra_dimension_switch_probability)
-Number_of_stay = round(Total_trials * Stay_probability)
+Number_of_stay = round((Total_trials) * Stay_probability)
 
 print(Number_of_EDS)
 print(Number_of_IDS)
@@ -122,44 +189,13 @@ Pic_order[Pic_order == 1] = 'Face'
 Pic_order[Pic_order == 2] = 'Scene'
 
 # SHape Sizing
-vis_deg_circ=4#15 # too big!
+vis_deg_circ=8#15 # too big!
 vis_deg_poly=13#20 #good for MRI?
 
 # Add multiple shutdown keys "at once".
 for key in ['q', 'escape']:
     event.globalKeys.add(key, func=core.quit)
 
-
-#### Dependent on what variation of the experiment is running
-if expInfo['MRI/Behavior? (M/B)']=='M':
-    ITIs = [2, 3, 4, 5, 6, 7, 8, 9, 10]
-    MRIflag=1
-    yes_key='1'
-    no_key='2'
-    thisDir_save=_thisDir
-    thisDir_save=thisDir_save.split('/')
-    thisDir_save='/'.join(thisDir_save[:-1])
-    filename = thisDir_save + u'/ThalHi_data/behav_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
-        # SHape Sizing
-    vis_deg_circ=15 # too big!
-    vis_deg_poly=20 #good for MRI?
-
-elif expInfo['MRI/Behavior? (M/B)']=='B':
-    ITIs = [1, 1.1, 1.2, 1.3, 1.4, 1.5]
-    MRIflag=0
-    yes_key='1'
-    no_key='0'
-    # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-    thisDir_save=_thisDir
-    thisDir_save=thisDir_save.split('/')
-    thisDir_save='/'.join(thisDir_save[:-1])
-    filename = thisDir_save + u'/ThalHi_data/behav_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
-    #Above to be saved in Thalamege *change later January 21 2019
-    vis_deg_circ=10
-    vis_deg_poly=15
-else:
-    print('no ITIs provided')
-    core.quit()
 
 # Not using experiment handler anymore
 # An ExperimentHandler isn't essential but helps with data saving
@@ -182,19 +218,11 @@ def makeCSV(filename, thistrialDict, trial_num):
          ExpHead=thistrialDict[trial_num].keys()
          writer=csv.DictWriter(our_data,fieldnames=ExpHead)
          writer.writeheader()
-         for n in range(trial_num):
+         for n in range(trial_num+1):
             writer.writerow(thistrialDict[n])
 #Response Keys dictionary
-corrAns = {"yes":1, "no":0} #This is not in use for this script version
+#corrAns = {"yes":1, "no":0} #This is not in use for this script version
 
-
-#----------------setup windows and display objects--------
-##### Setup the display Window
-win = visual.Window(
-    size=(1280, 800), fullscr=True, screen=0,
-    allowGUI=False, allowStencil=False, units='deg',
-    monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
-    blendMode='avg', useFBO=True)
 
 # Make sure to adjust window and monitor parameters per computer used
 #not doing this will affect stimulus presentation among other things
@@ -281,31 +309,41 @@ for i,f in enumerate(np.random.randint(low=0,high=len(faces_list),size=len(Trial
 #blue = [0, 0, 255]
 #color = 'green'
 #scale = 0.7
-donutVert = [[(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)],[(-.15,-.15),(-.15,.15),(.15,.15),(.15,-.15)]]
-simpleVert= [(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)]
+#donutVert = [[(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)],[(-.15,-.15),(-.15,.15),(.15,.15),(.15,-.15)]]
+#simpleVert= [(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)]
+size=(.75,.85)
+#filled circle 
+circle_filled_r = visual.ImageStim(
+    win=win, image=os.getcwd()+'/cues/fill_r_circle.png',name='circle_filled_r', units='norm', 
+    pos=(0,0), size=size) #, size=[vis_deg_circ/1.75,vis_deg_circ/1.75
 
-#filled circle # setting colors as None now, will change them when setting up trial sequence
-circle_filled = visual.Circle(
-    win=win, name='circle_filled', units='deg', radius=0.5,
-    pos=(0,0), size=[vis_deg_circ/2,vis_deg_circ/2], color=None, fillColor=None,
-    fillColorSpace='rgb255')
+circle_filled_b = visual.ImageStim(
+    win=win, image=os.getcwd()+'/cues/fill_b_circle.png',name='circle_filled_b', units='norm', 
+    pos=(0,0), size=size) #, size=[vis_deg_circ/1.75,vis_deg_circ/1.75]
 
 #donut circle
-circle_donut = visual.Circle(
-    win=win, name='circle_donut', units='deg', #radius=0.5,
-    fillColor=None, lineWidth=100, pos=(0,0),
-    size=[vis_deg_circ/2,vis_deg_circ/2], lineColorSpace='rgb255', lineColor=None,
-    interpolate=True)
+circle_donut_r = visual.ImageStim(
+    win=win,  image=os.getcwd()+'/cues/donut_r_circle.png',name='circle_donut_r', units='norm', pos=(0,0), 
+    interpolate=True,size=size) #size=[vis_deg_circ/1.75,vis_deg_circ/1.75]
 
-polygon_filled = visual.ShapeStim(
-    win=win, name='polygon_filled', units='deg', vertices=simpleVert,
-    fillColor=None, fillColorSpace='rgb255',
-    lineWidth=0, size=[vis_deg_poly,vis_deg_poly], pos=(0,0))
+circle_donut_b = visual.ImageStim(
+    win=win,  image=os.getcwd()+'/cues/donut_b_circle.png',name='circle_donut_b', units='norm', pos=(0,0), 
+    interpolate=True,size=size ) 
+    #size=[vis_deg_circ/1.75,vis_deg_circ/1.75]
 
-polygon_donut = visual.ShapeStim(
-    win=win, name='polygon_donut', units='deg', vertices=donutVert,
-    fillColor=None, fillColorSpace='rgb255', lineWidth=30,
-    size=[vis_deg_poly,vis_deg_poly], pos=(0,0), interpolate=True)
+#filled square
+polygon_filled_r = visual.ImageStim(
+    win=win, image=os.getcwd()+'/cues/fill_r_square.png',name='polygon_filled_r', units='norm', pos=(0,0),size=size) #size=[vis_deg_poly,vis_deg_poly],
+
+polygon_filled_b = visual.ImageStim(
+    win=win, image=os.getcwd()+'/cues/fill_b_square.png',name='polygon_filled_b', units='norm', pos=(0,0),size=size) #size=[vis_deg_poly,vis_deg_poly],
+
+#donut square
+polygon_donut_b = visual.ImageStim(
+    win=win,image=os.getcwd()+'/cues/donut_b_square.png', name='polygon_donut_b', units='norm',  pos=(0,0), interpolate=True,size=size) #size=[vis_deg_poly,vis_deg_poly],
+
+polygon_donut_r = visual.ImageStim(
+    win=win,image=os.getcwd()+'/cues/donut_r_square.png', name='polygon_donut_r', units='norm',  pos=(0,0), interpolate=True,size=size) #size=[vis_deg_poly,vis_deg_poly],
 
 
 #----------setup trial ordrs (switch and stay trials)---------
@@ -349,14 +387,14 @@ polygon_donut = visual.ShapeStim(
 
 ##### create a attribute dictionary saving all cue types
 # note, copying the shapestim and visual.circle object using copy.copy() turns out to be critical, otherwise can't change colors on the fly
-Cue_types = {'fpr': {'cue':'fpr', 'Color': 'red', 'Texture': 'Filled', 'Shape': 'Polygon', 'Task': 'Face', 'cue_stim': copy.copy(polygon_filled) },
-             'fpb': {'cue':'fpb', 'Color': 'blue', 'Texture': 'Filled', 'Shape': 'Polygon', 'Task': 'Face', 'cue_stim': copy.copy(polygon_filled) },
-             'fcr': {'cue':'fcr', 'Color': 'red', 'Texture': 'Filled', 'Shape': 'Circle', 'Task': 'Scene', 'cue_stim': copy.copy(circle_filled) },
-             'fcb': {'cue':'fcb', 'Color': 'blue', 'Texture': 'Filled', 'Shape': 'Circle', 'Task': 'Scene', 'cue_stim': copy.copy(circle_filled) },
-             'dpr': {'cue':'dpr', 'Color': 'red', 'Texture': 'Donut', 'Shape': 'Polygon', 'Task': 'Face', 'cue_stim': copy.copy(polygon_donut) },
-             'dcr': {'cue':'dcr', 'Color': 'red', 'Texture': 'Donut', 'Shape': 'Circle', 'Task': 'Face', 'cue_stim': copy.copy(circle_donut) },
-             'dpb': {'cue':'dpb', 'Color': 'blue', 'Texture': 'Donut', 'Shape': 'Polygon', 'Task': 'Scene', 'cue_stim': copy.copy(polygon_donut) },
-             'dcb': {'cue':'dcb', 'Color': 'blue', 'Texture': 'Donut', 'Shape': 'Circle', 'Task': 'Scene', 'cue_stim': copy.copy(circle_donut) }}
+Cue_types = {'fpr': {'cue':'fpr', 'Color': 'red', 'Texture': 'Filled', 'Shape': 'Polygon', 'Task': 'Face', 'cue_stim': copy.copy(polygon_filled_r) },
+             'fpb': {'cue':'fpb', 'Color': 'blue', 'Texture': 'Filled', 'Shape': 'Polygon', 'Task': 'Face', 'cue_stim': copy.copy(polygon_filled_b) },
+             'fcr': {'cue':'fcr', 'Color': 'red', 'Texture': 'Filled', 'Shape': 'Circle', 'Task': 'Scene', 'cue_stim': copy.copy(circle_filled_r) },
+             'fcb': {'cue':'fcb', 'Color': 'blue', 'Texture': 'Filled', 'Shape': 'Circle', 'Task': 'Scene', 'cue_stim': copy.copy(circle_filled_b) },
+             'dpr': {'cue':'dpr', 'Color': 'red', 'Texture': 'Donut', 'Shape': 'Polygon', 'Task': 'Face', 'cue_stim': copy.copy(polygon_donut_r) },
+             'dcr': {'cue':'dcr', 'Color': 'red', 'Texture': 'Donut', 'Shape': 'Circle', 'Task': 'Face', 'cue_stim': copy.copy(circle_donut_r) },
+             'dpb': {'cue':'dpb', 'Color': 'blue', 'Texture': 'Donut', 'Shape': 'Polygon', 'Task': 'Scene', 'cue_stim': copy.copy(polygon_donut_b) },
+             'dcb': {'cue':'dcb', 'Color': 'blue', 'Texture': 'Donut', 'Shape': 'Circle', 'Task': 'Scene', 'cue_stim': copy.copy(circle_donut_b) }}
 
 #select a random first trial
 
@@ -367,7 +405,6 @@ random_first = randomchoice(list(Cue_types))
 #### attributes of each trial, the cue type, color, shape, texture, the cue stimuli , and the picture stim.
 Trial_dict = {}
 for i in range(len(Trial_order)):
-
     if i == 0 :   #set first trial, randomly select
         Trial_dict[i] = Cue_types[random_first]
     else:
@@ -412,15 +449,15 @@ for i in range(len(Trial_order)):
     # record the trial type for each trial
     Trial_dict[i]['Trial_type'] = Trial_order[i]
 
-    #set colors of the cue stim # donot circle need to set line color but not fill
-    if Trial_dict[i]['cue'] == 'dcr':
-        Trial_dict[i]['cue_stim'].setLineColor(Trial_dict[i]['Color'])
-        #Trial_dict[i]['cue_stim'].lineWidth=200 
-    elif Trial_dict[i]['cue'] == 'dcb':
-        Trial_dict[i]['cue_stim'].setLineColor(Trial_dict[i]['Color'])
-    else: # every othre cue set both line and fill color
-        Trial_dict[i]['cue_stim'].setLineColor(Trial_dict[i]['Color'])
-        Trial_dict[i]['cue_stim'].setFillColor(Trial_dict[i]['Color'])
+#    #set colors of the cue stim # donot circle need to set line color but not fill
+#    if Trial_dict[i]['cue'] == 'dcr':
+#        Trial_dict[i]['cue_stim'].setLineColor(Trial_dict[i]['Color'])
+#        #Trial_dict[i]['cue_stim'].lineWidth=200 
+#    elif Trial_dict[i]['cue'] == 'dcb':
+#        Trial_dict[i]['cue_stim'].setLineColor(Trial_dict[i]['Color'])
+#    else: # every othre cue set both line and fill color
+#        Trial_dict[i]['cue_stim'].setLineColor(Trial_dict[i]['Color'])
+#        Trial_dict[i]['cue_stim'].setFillColor(Trial_dict[i]['Color'])
 
     # random place scene or face picture
     Trial_dict[i]['pic'] = Pic_order[i]
@@ -571,7 +608,8 @@ core.wait(Initial_wait_time)
 ##### Start trials
 
 for trial_num in range(len(Trial_dict)): #range(len(Trial_dict))
-
+    #print('\n')
+    print(trial_num)
     # draw the cue
     Trial_dict[trial_num]['cue_stim'].draw()
     Cue_Prez_T=Time_Since_Run.getTime()
@@ -584,11 +622,23 @@ for trial_num in range(len(Trial_dict)): #range(len(Trial_dict))
     #print(Trial_dict[trial_num]['Color'])
 
     # draw the face or scene picture
-    Trial_dict[trial_num]['pic_stim'].draw()
+    event.clearEvents()
+    Trial_dict[trial_num]['pic_stim'].autoDraw=True
     Photo_Prez=Time_Since_Run.getTime()
+    
+    subResps=[]
+    max_win=int(Pic_time/(1/refresh_rate))
+    win_count=0
     RT_clock.reset()
-    win.flip()
-    subRespo = event.waitKeys(maxWait=2.5, timeStamped=RT_clock, keyList=['0','1'])
+    while win_count !=max_win:
+        win.flip()
+        win_count+=1
+        subRespo=event.getKeys(timeStamped=RT_clock, keyList=[no_key,yes_key])
+        if subRespo:
+            subResps.append(subRespo)
+    #core.wait(Pic_time)
+    #subRespo = event.getKeys(timeStamped=RT_clock, keyList=['0','1'])
+    Trial_dict[trial_num]['pic_stim'].autoDraw=False
     subRespo_T=Time_Since_Run.getTime()
     if Trial_dict[trial_num]['cue']=='dcr' or Trial_dict[trial_num]['cue']=='dpr':
         if Trial_dict[trial_num]['pic']=='Face':
@@ -611,43 +661,54 @@ for trial_num in range(len(Trial_dict)): #range(len(Trial_dict))
         else:
             corr_resp=no_key
 
-    #print(subRespo)
-    #print(subRespo[0])
+    print(subResps)
+    #print(subResps[0])
     #print(subRespo[0][0])
     #print(subRespo[0][1])
-
-    if subRespo==None:
+    
+    if not subResps:
         trial_Corr=-1
-        subRespo_T='none'
         rt='none'
         subKEY='none'
-    elif subRespo[0][0]==corr_resp:
-        trial_Corr=1
-        rt=subRespo[0][1]
-        subKEY=subRespo[0][0]
-    elif subRespo[0][0]!=corr_resp:
-        trial_Corr=0
-        rt=subRespo[0][1]
-        subKEY=subRespo[0][0]
     else:
-        print('Something Wrong with subRespo.waitKeys')
-        core.quit()
-
-    Trial_dict[trial_num]['subRespo_T']=subRespo_T
-    Trial_dict[trial_num]['Photo_Prez']=Photo_Prez
-    Trial_dict[trial_num]['Cue_Prez_T']=Cue_Prez_T
+        subRespo=subResps[0]
+        if subRespo[0][0]==corr_resp:
+            trial_Corr=1
+            rt=subRespo[0][1]
+            subKEY=subRespo[0][0]
+        elif subRespo[0][0]!=corr_resp:
+            trial_Corr=0
+            rt=subRespo[0][1]
+            subKEY=subRespo[0][0]
+        else:
+            print('Something Wrong with subRespo.waitKeys')
+            core.quit()
+    
+    #print(subKEY)
+    Trial_dict[trial_num]['Time_Since_Run_subRespo']=subRespo_T
+    Trial_dict[trial_num]['Time_Since_Run_Photo_Prez']=Photo_Prez
+    Trial_dict[trial_num]['Time_Since_Run_Cue_Prez']=Cue_Prez_T
     Trial_dict[trial_num]['trial_Corr']=trial_Corr
     Trial_dict[trial_num]['rt']=rt
     Trial_dict[trial_num]['What_Is_CorrResp']=corr_resp
     Trial_dict[trial_num]['Subject_Respo']=subKEY
     Trial_dict[trial_num]['trial_n']=trial_num
+    Trial_dict[trial_num]['block']=expInfo['block']
+    Trial_dict[trial_num]['sub']=expInfo['participant']
+    Trial_dict[trial_num]['Stay_R']=Stay_probability
+    Trial_dict[trial_num]['IDS_R']=Intra_dimension_switch_probability
     #core.wait(Pic_time)
     #print(Trial_dict[trial_num]['img_path'])
 
     # draw the ITI fixation
     Fix_Cue.draw()
+    if trial_num<Number_of_initial_stays: 
+        ITI=1.5
+    else:
+        ITI=make_ITI(trial_num-Number_of_initial_stays)
+    #print(ITI)
     win.flip()
-    core.wait(randomchoice(ITIs)) # randomly pick one from the range of ITIs
+    core.wait(ITI) # randomly pick one from the range of ITIs
     makeCSV(filename=filename,thistrialDict=Trial_dict,trial_num=trial_num)
 
 ##### Add a finish screen so subjects know they are done with a task block
