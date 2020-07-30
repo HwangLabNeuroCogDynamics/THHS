@@ -84,7 +84,7 @@ circ_ratio=vis_deg_poly/vis_deg_circ
 #Screen Distance, Size (in pixels), and screen width
 ##### Setup the display Window
 win = visual.Window(
-    size=(1280, 800), fullscr=False, screen=0,
+    size=(1366, 768), fullscr=False, screen=0,
     allowGUI=False, allowStencil=False, units='deg',
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True)

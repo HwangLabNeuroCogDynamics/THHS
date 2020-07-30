@@ -451,17 +451,18 @@ if MRIflag:
     Wait_for_Scanner.draw()
     win.flip()
     event.waitKeys(keyList=['lshift','z'])
-    core.wait(6)
 
-##### Triggers for serial port ***
+
+##### 2 seconds Intial fixation
+Fix_Cue.draw()
+win.flip()
+#core.wait(Initial_wait_time)
+## INITIALIZING A 6 SECOND DELAY
+core.wait(6)
 
 #### Setting up a global clock to track initiation of experiment to end
 Time_Since_Run = core.MonotonicClock()  # to track the time since experiment started, this way it is very flexible compared to psychopy.clock
 RT_clock=core.Clock()
-##### 2 seconds Intial fixation
-Fix_Cue.draw()
-win.flip()
-core.wait(Initial_wait_time)
 
 ##### Start trials
 

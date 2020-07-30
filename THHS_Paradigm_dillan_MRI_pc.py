@@ -81,7 +81,7 @@ win = visual.Window(
 
 #### Dependent on what variation of the experiment is running
 if expInfo['MRI/Behavior? (M/B)']=='M':
-    ITIpath='H:/Generate_ITIs/ThalHiITIs/'
+    ITIpath='Z:/Generate_ITIs/ThalHiITIs/'
     ITI_rand_file=np.random.choice(os.listdir(ITIpath))
     ITI_rand_file=open(ITIpath+ITI_rand_file,'r').readlines()
     ITI_list=[]
