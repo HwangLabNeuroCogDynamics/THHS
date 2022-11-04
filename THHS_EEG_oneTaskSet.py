@@ -76,7 +76,7 @@ expInfo['expName'] = expName
 #----------------setup windows and display objects--------
 ##### Setup the display Window
 win = visual.Window(
-    size=(1280, 800), fullscr=True, screen=0,
+    size=(1366, 768), fullscr=True, screen=0,
     allowGUI=False, allowStencil=False, units='deg',
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True)
@@ -154,7 +154,7 @@ no_key='0'
 thisDir_save=_thisDir
 thisDir_save=thisDir_save.split('/')
 thisDir_save='/'.join(thisDir_save[:-1])
-filename = thisDir_save + u'/ThalHi_data/eeg_data/behavioral_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
+filename = thisDir_save + u'/Users/Public/Thalhi/THHS_EEG_oneTaskSet_behavioral_data/%s_%s_%s_%s' % (expInfo['participant'], expInfo['block'],expName, expInfo['date'])
 #Above to be saved in Thalamege *change later January 21 2019
 vis_deg_circ=10
 vis_deg_poly=15
@@ -162,7 +162,7 @@ refresh_rate=expInfo['refresh_rate']
 
 #EEGflag=0
 if EEGflag:
-    port=serial.Serial('COM7',baudrate=115200, bytesize=serial.EIGHTBITS) #biosemi use 115200
+    port=serial.Serial('COM7',baudrate=115200) #double check here, biosemi usb serial port is not the same as brainvision virtual trigger port
     port.close()
     startSaveflag=bytes([254])
     stopSaveflag=bytes([255])
@@ -228,10 +228,10 @@ else:
 #WelcomeClock = core.Clock()
 Welc = visual.TextStim(win=win, name='Welc',
     text=u'Welcome!', units='norm',
-    font=u'Arial',anchorVert = 'center',
+    font=u'Arial',
     pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
-    color=u'white', colorSpace='rgb', opacity=1
-    );
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=0.0);
 
 
 ##### Instructions screen
@@ -239,7 +239,7 @@ Welc = visual.TextStim(win=win, name='Welc',
 #InstructionsClock = core.Clock()
 Directions = visual.TextStim(win=win, name='Directions',
     text=u'You are now about to begin the task. \n\nGet Ready \n\nPress Any Key to Continue',
-    font=u'Arial', units='norm', anchorVert = 'center',
+    font=u'Arial', units='norm',
     pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
     color=u'white', colorSpace='rgb', opacity=1
     );
@@ -250,7 +250,7 @@ Directions = visual.TextStim(win=win, name='Directions',
 #FixationClock = core.Clock()
 Fix_Cue = visual.TextStim(win=win, name='Fix_Cue',
     text=u'+', units='norm',
-    font=u'Arial', anchorVert = 'center',
+    font=u'Arial',
     pos=(0, 0), height=0.3, wrapWidth=None, ori=0,
     color=u'white', colorSpace='rgb', opacity=1
     );
@@ -258,7 +258,7 @@ Fix_Cue = visual.TextStim(win=win, name='Fix_Cue',
 #### For Plug in below
 Wait_for_Scanner = visual.TextStim(win=win, name='Wait_for_Scanner',
     text=u'Waiting for MRI to initiate task',
-    units='norm',anchorVert = 'center',
+    units='norm',
     pos=(0,0), height=0.09, wrapWidth=None, ori=0,
     color=u'white', colorSpace='rgb', opacity=1
     );
