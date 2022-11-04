@@ -356,7 +356,7 @@ if behavFlag:
     # Initialize components for Routine "Instructions"
     InstructionsClock = core.Clock()
     Directions = visual.TextStim(win=win, name='Directions',
-        text=u'During this task you will be shown a series of objects followed by photos of faces or scenes. While the photo is present on screen\nyou will be expected to answer a yes/no question about each photo. \n\nEach specific yes/no question will be dependent on the object presented before the photo. In order for the correct response to be recorded, note that YES is farthest left, and NO is farthest right. \n\nPress YES to continue.',
+        text=u'During this task you will be shown a series of objects followed by photos of faces or scenes. While the photo is present on screen\nyou will be expected to answer a yes/no question about each photo. \n\nEach specific yes/no question will be dependent on the object presented before the photo. In order for the correct response to be recorded, note that YES is farthest right, and NO is farthest left. \n\nPress YES to continue.',
         font=u'Arial', alignVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,

@@ -6,7 +6,7 @@
 ## march 04, 2019: change cue (shape) time from 1 second to 500ms
 """
 Authors: Marco Pipoly, Dillan Cellier, Kai Hwang.
-University of Iowa, 
+University of Iowa,
 Iowa City, IA
 Hwang Lab, Dpt. of Psychological and Brain Sciences
 As of Feb. 15, 2019:

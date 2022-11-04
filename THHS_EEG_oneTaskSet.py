@@ -162,7 +162,7 @@ refresh_rate=expInfo['refresh_rate']
 
 #EEGflag=0
 if EEGflag:
-    port=serial.Serial('COM4',baudrate=115200)
+    port=serial.Serial('COM7',baudrate=115200, bytesize=serial.EIGHTBITS) #biosemi use 115200
     port.close()
     startSaveflag=bytes([254])
     stopSaveflag=bytes([255])
@@ -228,10 +228,10 @@ else:
 #WelcomeClock = core.Clock()
 Welc = visual.TextStim(win=win, name='Welc',
     text=u'Welcome!', units='norm',
-    font=u'Arial',
+    font=u'Arial',anchorVert = 'center',
     pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
-    color=u'white', colorSpace='rgb', opacity=1,
-    depth=0.0);
+    color=u'white', colorSpace='rgb', opacity=1
+    );
 
 
 ##### Instructions screen
@@ -239,10 +239,10 @@ Welc = visual.TextStim(win=win, name='Welc',
 #InstructionsClock = core.Clock()
 Directions = visual.TextStim(win=win, name='Directions',
     text=u'You are now about to begin the task. \n\nGet Ready \n\nPress Any Key to Continue',
-    font=u'Arial', alignVert='center', units='norm',
+    font=u'Arial', units='norm', anchorVert = 'center',
     pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
-    color=u'white', colorSpace='rgb', opacity=1,
-    depth=0.0);
+    color=u'white', colorSpace='rgb', opacity=1
+    );
 
 
 ##### Central fixations
@@ -250,18 +250,18 @@ Directions = visual.TextStim(win=win, name='Directions',
 #FixationClock = core.Clock()
 Fix_Cue = visual.TextStim(win=win, name='Fix_Cue',
     text=u'+', units='norm',
-    font=u'Arial',
+    font=u'Arial', anchorVert = 'center',
     pos=(0, 0), height=0.3, wrapWidth=None, ori=0,
-    color=u'white', colorSpace='rgb', opacity=1,
-    depth=0.0);
+    color=u'white', colorSpace='rgb', opacity=1
+    );
 
 #### For Plug in below
 Wait_for_Scanner = visual.TextStim(win=win, name='Wait_for_Scanner',
     text=u'Waiting for MRI to initiate task',
-    alignVert='center', units='norm',
+    units='norm',anchorVert = 'center',
     pos=(0,0), height=0.09, wrapWidth=None, ori=0,
-    color=u'white', colorSpace='rgb', opacity=1,
-    depth=0.0);
+    color=u'white', colorSpace='rgb', opacity=1
+    );
 ##### Load Face and Scene pictures into stim objects, organized into a dict
 #Dictionaries and the corresponding file paths
 direc = os.getcwd()+'/localizer_stim/' #_thisDir #'/Users/mpipoly/Desktop/Psychopy/localizer_stim/' #always setup path on the fly in case you switch computers

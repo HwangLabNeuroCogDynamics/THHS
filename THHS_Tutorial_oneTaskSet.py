@@ -6,7 +6,7 @@
 
 """
 Authors: Marco Pipoly, Dillan Cellier, Kai Hwang.
-University of Iowa, 
+University of Iowa,
 Iowa City, IA
 Hwang Lab, Dpt. of Psychological and Brain Sciences
 As of Feb. 15, 2019:
@@ -24,7 +24,7 @@ written from the psychopy builder
 
 However, this script has been heavily edited with python code non-specific to the builder.
 Take this into account when reading through this as script design here does not mirror builder
-script layout. 
+script layout.
 """
 
 from __future__ import absolute_import, division, print_function
@@ -88,7 +88,7 @@ circ_ratio=vis_deg_poly/vis_deg_circ
 #Screen Distance, Size (in pixels), and screen width
 ##### Setup the display Window
 win = visual.Window(
-    size=(1280, 800), fullscr=False, screen=0,
+    size=(1366, 768), fullscr=False, screen=0,
     allowGUI=False, allowStencil=False, units='deg',
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True)
@@ -131,13 +131,13 @@ def pracBlocks(n_trials=n_trials):
     Number_of_EDS = round(Total_switch_trials * Extra_dimension_switch_probability)
     Number_of_IDS = round(Total_switch_trials * Intra_dimension_switch_probability)
     Number_of_stay = round(Total_trials * Switch_probability)
-    
+
     print(Number_of_EDS)
     print(Number_of_IDS)
     print(Number_of_stay)
-    
-    
-    
+
+
+
     # ###setup switch and stay trials order, represented by integer code above
     Trial_order = np.concatenate(( np.repeat(Stay_trial, Number_of_stay), np.repeat(Intra_dimension_switch, Number_of_IDS), np.repeat(Extra_dimension_switch, Number_of_EDS)))
     Trial_order_int = np.random.permutation(np.random.permutation(Trial_order)) #randomly permute the trial order
@@ -255,11 +255,11 @@ def pracBlocks(n_trials=n_trials):
         if trial_num==0:
             win.flip()
             get_ready=visual.TextStim(win=win, name='DemoInstruct',
-            text=u'Get ready',alignVert='center', units='norm',
+            text=u'Get ready',anchorVert='center', units='norm',
             pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
             color=u'white', colorSpace='rgb', opacity=1,
-            languageStyle='LTR',
-            depth=0.0);
+            languageStyle='LTR'
+            );
             get_ready.draw()
             win.flip()
             core.wait(2)
@@ -326,8 +326,8 @@ def pracBlocks(n_trials=n_trials):
     print(np.sum(acc))
     acc_feedback=visual.TextStim(win=win, name='accFeedback',
                     text=u'Your accuracy was '+str((np.sum(acc)/len(Trial_order))*100)+' percent. Would you like to try again?', font=u'Arial',
-                    alignVert='center', units='norm',pos=(0, 0), height=0.09, wrapWidth=None, ori=0,color=u'white', colorSpace='rgb', opacity=1,
-                    languageStyle='LTR', depth=0.0);
+                    anchorVert='center', units='norm',pos=(0, 0), height=0.09, wrapWidth=None, ori=0,color=u'white', colorSpace='rgb', opacity=1,
+                    languageStyle='LTR' );
     Proportion = str(np.sum(acc)/n_trials*100)
     print(Proportion)
 
@@ -340,7 +340,7 @@ def pracBlocks(n_trials=n_trials):
 
 
 if behavFlag:
-    
+
     #### Welcome screen
     # Initialize components for Routine "Welcome"
     WelcomeClock = core.Clock()
@@ -349,137 +349,137 @@ if behavFlag:
         font=u'Arial',
         pos=(0, 0), height=0.08, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ##### Instructions screen
     # Initialize components for Routine "Instructions"
     InstructionsClock = core.Clock()
     Directions = visual.TextStim(win=win, name='Directions',
         text=u'During this task you will be shown a series of objects followed by photos of faces or scenes. While the photo is present on screen\nyou will be expected to answer a yes/no question about each photo. \n\nEach specific yes/no question will be dependent on the object presented before the photo. In order for the correct response to be recorded, note that YES is farthest left, and NO is farthest right. \n\nPress YES to continue.',
-        font=u'Arial', alignVert='center', units='norm',
+        font=u'Arial', anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ###### Demo Instructions and Special Figures
     DemoInstruct = visual.TextStim(win=win, name='DemoInstruct',
         text=u'Now we will show you a demo of the task.\nPlease listen carefully to the experimenter as they guide you through the task.\n\n Press NO to continue.', font=u'Arial',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     KeyConstant = visual.TextStim(win=win, name='KeyConstant',
         text=u'Press Any Key to Continue',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(-.5, .9), height=0.06, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ShapeMatters = visual.TextStim(win=win, name='ShapeMatters',
         text=u'If FILLED, then SHAPE matters!',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .5), height=0.09, wrapWidth=None, ori=0, #height =0.09
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Arrow = visual.TextStim(win=win, name='Arrow',
         text=u'←',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.8, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Equals = visual.TextStim(win=win, name='Equals',
         text=u'=',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Face_txt = visual.TextStim(win=win, name='Face_txt',
         text=u'FACE',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.5, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Scene_txt = visual.TextStim(win=win, name='Scene_txt',
         text=u'SCENE',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.55, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Question_Mrk = visual.TextStim(win=win, name='Question_Mrk',
         text=u'?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.5, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Donut_Stim = visual.TextStim(win=win, name='Donut_Stim',
         text=u'Now, what if the object is no longer filled?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .35), height=0.15, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Instruct_new = visual.TextStim(win=win, name='Instruct_new',
         text=u'Before, FILLED = SHAPE, now EMPTY = COLOR',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, -.25), height=0.15, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ColorMatters = visual.TextStim(win=win, name='ColorMatters',
         text=u'If EMPTY, then COLOR matters!',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .5), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Quiz_txt=visual.TextStim(win=win, name='quiz',
         text=u'If you see this object, what is the correct response to this picture?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .75), height=0.075, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Keep_demo=visual.TextStim(win=win, name='keepDemo',
         text=u'Do you feel ready to move on to a practice?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .5), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Feedback_txt=[visual.TextStim(win=win, name='Correct!',
-        text=u'CORRECT!',font=u'Arial', alignVert='center', units='norm',
+        text=u'CORRECT!',font=u'Arial', anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0),visual.TextStim(win=win, name='Incorrect',
-        text=u'Oops, try another',font=u'Arial', alignVert='center', units='norm',
+        languageStyle='LTR'
+        ),visual.TextStim(win=win, name='Incorrect',
+        text=u'Oops, try another',font=u'Arial', anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0)]
-    
+        languageStyle='LTR'
+        )]
+
     ##### Central fixations
     # Initialize components for Routine "Fixation"
     FixationClock = core.Clock()
@@ -488,14 +488,14 @@ if behavFlag:
         font=u'Arial',
         pos=(0, 0), height=0.3, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ##### Load Face and Scene pictures into stim objects, organized into a dict
     #Dictionaries and the corresponding file paths
     direc = os.getcwd()+'/localizer_stim/' #_thisDir #'/Users/mpipoly/Desktop/Psychopy/localizer_stim/' #always setup path on the fly in case you switch computers
-    
-    
+
+
     #### For Slow intro
     Face_Stim = visual.ImageStim(
         win=win, image=direc + 'faces/1.jpg', size=(7,7),
@@ -503,8 +503,8 @@ if behavFlag:
     Scene_Stim = visual.ImageStim(
         win=win, image=direc + 'scenes/2.jpg',size=(7,7),
         units=None, pos=(6,0))
-    
-    
+
+
     ##### Setup Cue stim objects
     #Overlapping vertices for below
     #red = [1.0,-1,-1]
@@ -513,32 +513,32 @@ if behavFlag:
     scale = 0.7
     donutVert = [[(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)],[(-.15,-.15),(-.15,.15),(.15,.15),(.15,-.15)]]
     simpleVert= [(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)]
-    
+
     #filled circle # setting colors as None now, will change them when setting up trial sequence
     circle_filled = visual.Circle(
         win=win, name='circle_filled', units='deg', radius=0.5,
         pos=(0,0), size=[vis_deg_circ,vis_deg_circ], color=None, fillColor=None,
         fillColorSpace='rgb255')
-    
+
     #donut circle
     circle_donut = visual.Circle(
         win=win, name='circle_donut', units='deg', radius=0.5,
         fillColor=None, lineWidth=25, pos=(0,0),
         size=[vis_deg_circ,vis_deg_circ], lineColorSpace='rgb255', lineColor=None,
         interpolate=True)
-    
+
     polygon_filled = visual.ShapeStim(
         win=win, name='polygon_filled', units='deg', vertices=simpleVert,
         fillColor=None, fillColorSpace='rgb255',
         lineWidth=0, size=[vis_deg_poly,vis_deg_poly], pos=(0,0))
-    
+
     polygon_donut = visual.ShapeStim(
         win=win, name='polygon_donut', units='deg', vertices=donutVert,
         fillColor=None, fillColorSpace='rgb255', lineWidth=3,
         size=[vis_deg_poly,vis_deg_poly], pos=(0,0))
 
 elif MRIflag:
-    
+
     #### Welcome screen
     # Initialize components for Routine "Welcome"
     WelcomeClock = core.Clock()
@@ -547,137 +547,137 @@ elif MRIflag:
         font=u'Arial',
         pos=(0, 0), height=0.08, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ##### Instructions screen
     # Initialize components for Routine "Instructions"
     InstructionsClock = core.Clock()
     Directions = visual.TextStim(win=win, name='Directions',
         text=u'During this task you will be shown a series of objects followed by photos of faces or scenes. While the photo is present on screen\nyou will be expected to answer a yes/no question about each photo. \n\nEach specific yes/no question will be dependent on the object presented before the photo. In order for the correct response to be recorded, note that YES is farthest left, and NO is farthest right. \n\nPress YES to continue.',
-        font=u'Arial', alignVert='center', units='norm',
+        font=u'Arial', anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ###### Demo Instructions and Special Figures
     DemoInstruct = visual.TextStim(win=win, name='DemoInstruct',
         text=u'Now we will show you a demo of the task.\nPlease listen carefully to the experimenter as they guide you through the task.\n\n Press NO to continue.', font=u'Arial',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     KeyConstant = visual.TextStim(win=win, name='KeyConstant',
         text=u'Press Any Key to Continue',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(-.5, .9), height=0.06, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ShapeMatters = visual.TextStim(win=win, name='ShapeMatters',
         text=u'If FILLED, then SHAPE matters!',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .5), height=0.09, wrapWidth=None, ori=0, #height =0.09
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Arrow = visual.TextStim(win=win, name='Arrow',
         text=u'←',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.8, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Equals = visual.TextStim(win=win, name='Equals',
         text=u'=',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, 0), height=0.4, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Face_txt = visual.TextStim(win=win, name='Face_txt',
         text=u'FACE',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.6, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Scene_txt = visual.TextStim(win=win, name='Scene_txt',
         text=u'SCENE',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.5, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Question_Mrk = visual.TextStim(win=win, name='Question_Mrk',
         text=u'?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(.5, 0), height=0.2, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Donut_Stim = visual.TextStim(win=win, name='Donut_Stim',
         text=u'Now, what if the object is no longer filled?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .35), height=0.15, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Instruct_new = visual.TextStim(win=win, name='Instruct_new',
         text=u'Before, FILLED = SHAPE, now EMPTY = COLOR',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, -.25), height=0.15, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ColorMatters = visual.TextStim(win=win, name='ColorMatters',
         text=u'If EMPTY, then COLOR matters!',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .5), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Quiz_txt=visual.TextStim(win=win, name='quiz',
         text=u'If you see this object, what is the correct response to this picture?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .75), height=0.075, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Keep_demo=visual.TextStim(win=win, name='keepDemo',
         text=u'Do you feel ready to move on to a practice?',
-        alignVert='center', units='norm',
+        anchorVert='center', units='norm',
         pos=(0, .5), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     Feedback_txt=[visual.TextStim(win=win, name='Correct!',
-        text=u'CORRECT!',font=u'Arial', alignVert='center', units='norm',
+        text=u'CORRECT!',font=u'Arial', anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0),visual.TextStim(win=win, name='Incorrect',
-        text=u'Oops, try another',font=u'Arial', alignVert='center', units='norm',
+        languageStyle='LTR'
+        ),visual.TextStim(win=win, name='Incorrect',
+        text=u'Oops, try another',font=u'Arial', anchorVert='center', units='norm',
         pos=(0, 0), height=0.09, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0)]
-    
+        languageStyle='LTR'
+        )]
+
     ##### Central fixations
     # Initialize components for Routine "Fixation"
     FixationClock = core.Clock()
@@ -686,14 +686,14 @@ elif MRIflag:
         font=u'Arial',
         pos=(0, 0), height=0.3, wrapWidth=None, ori=0,
         color=u'white', colorSpace='rgb', opacity=1,
-        languageStyle='LTR',
-        depth=0.0);
-    
+        languageStyle='LTR'
+        );
+
     ##### Load Face and Scene pictures into stim objects, organized into a dict
     #Dictionaries and the corresponding file paths
     direc = os.getcwd()+'/localizer_stim/' #_thisDir #'/Users/mpipoly/Desktop/Psychopy/localizer_stim/' #always setup path on the fly in case you switch computers
-    
-    
+
+
     #### For Slow intro
     Face_Stim = visual.ImageStim(
         win=win, image=direc + 'faces/1.jpg',
@@ -701,8 +701,8 @@ elif MRIflag:
     Scene_Stim = visual.ImageStim(
         win=win, image=direc + 'scenes/2.jpg',
         units=None, pos=(4,0))
-    
-    
+
+
     ##### Setup Cue stim objects
     #Overlapping vertices for below
     #red = [1.0,-1,-1]
@@ -711,25 +711,25 @@ elif MRIflag:
     scale = 0.7
     donutVert = [[(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)],[(-.15,-.15),(-.15,.15),(.15,.15),(.15,-.15)]]
     simpleVert= [(-.2,-.2),(-.2,.2),(.2,.2),(.2,-.2)]
-    
+
     #filled circle # setting colors as None now, will change them when setting up trial sequence
     circle_filled = visual.Circle(
         win=win, name='circle_filled', units='deg', radius=0.5,
         pos=(0,0), size=[vis_deg_circ,vis_deg_circ], color=None, fillColor=None,
         fillColorSpace='rgb255')
-    
+
     #donut circle
     circle_donut = visual.Circle(
         win=win, name='circle_donut', units='deg', radius=0.5,
         fillColor=None, lineWidth=25, pos=(0,0),
         size=[vis_deg_circ,vis_deg_circ], lineColorSpace='rgb255', lineColor=None,
         interpolate=True)
-    
+
     polygon_filled = visual.ShapeStim(
         win=win, name='polygon_filled', units='deg', vertices=simpleVert,
         fillColor=None, fillColorSpace='rgb255',
         lineWidth=0, size=[vis_deg_poly,vis_deg_poly], pos=(0,0))
-    
+
     polygon_donut = visual.ShapeStim(
         win=win, name='polygon_donut', units='deg', vertices=donutVert,
         fillColor=None, fillColorSpace='rgb255', lineWidth=3,
